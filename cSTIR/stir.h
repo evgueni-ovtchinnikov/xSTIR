@@ -1,11 +1,15 @@
 #ifndef STIR_DATA_TYPES
 #define STIR_DATA_TYPES
 
-//#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <string>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/algorithm/string.hpp>
@@ -27,8 +31,10 @@
 #include "stir/IO/read_from_file.h"
 #include "stir/OSMAPOSL/OSMAPOSLReconstruction.h"
 #include "stir/OSSPS/OSSPSReconstruction.h"
+#include "stir/ProjDataInfoCylindrical.h"
 #include "stir/ProjDataInMemory.h"
 #include "stir/ProjDataInterfile.h"
+#include "stir/recon_buildblock/BinNormalisationFromProjData.h"
 #include "stir/recon_buildblock/distributable_main.h"
 #include "stir/recon_buildblock/PoissonLogLikelihoodWithLinearModelForMeanAndProjData.h"
 #include "stir/recon_buildblock/ProjectorByBinPairUsingProjMatrixByBin.h"
@@ -40,11 +46,6 @@
 
 #include "stir/StirException.h"
 #include "stir/TextWriter.h"
-
-#include <fstream>
-#include <iostream>
-#include <numeric>
-#include <string>
 
 #define GRAB 1
 

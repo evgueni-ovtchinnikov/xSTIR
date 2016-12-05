@@ -3070,20 +3070,6 @@ void* refDataHandle(void* ptr) {
 
 //data[i] = (*image)[z][y][x];
 
-extern "C"
-void* cSTIR_acquisitionModelDataFromTemplate(void* ptr_t)
-{
-	try {
-		sptrProjData& sptr_t =
-			objectSptrFromHandle<ProjData>((DataHandle*)ptr_t);
-		NEW_SPTR(ProjData, ptr_sptr,
-			ProjDataInMemory(sptr_t->get_exam_info_sptr(),
-			sptr_t->get_proj_data_info_sptr()));
-		return newObjectHandle(ptr_sptr);
-	}
-	CATCH
-}
-
 void* cSTIR_acquisitionModelDataFromTemplate(void* ptr_t);
 
 // obsolete model methods
@@ -3173,3 +3159,449 @@ return 0;
 //*ptr_sptr = sptr;
 //ObjectHandle<T>* ptr_handle = new ObjectHandle<T>(*ptr_sptr);
 
+//// DataHandle methods
+//void* newDataHandle();
+//void* charDataHandle(const char* s);
+//void* intDataHandle(int i);
+//void* floatDataHandle(float i);
+//void* doubleDataHandle(double i);
+//char* charDataFromHandle(const void* ptr);
+//int intDataFromHandle(const void* ptr);
+//float floatDataFromHandle(const void* ptr);
+//double doubleDataFromHandle(const void* ptr);
+//void deleteDataHandle(void* ptr);
+
+//// ExecutionStatus methods
+//int executionStatus(const void* ptr);
+//const char* executionError(const void* ptr);
+//const char* executionErrorFile(const void* ptr);
+//int executionErrorLine(const void* ptr);
+
+//extern "C" {
+
+//#ifndef CSTIR_FOR_MATLAB
+//	void cSTIR_getImageDimensions(const void* ptr, size_t pd);
+//	void cSTIR_getImageData(const void* ptr, size_t pd);
+//#else
+//	void cSTIR_getImageDimensions(const void* ptr, int* pd);
+//	void cSTIR_getImageData(const void* ptr, double* pd);
+//#endif
+
+//void cSTIR_deleteObject(void* ptr);
+
+//void* cSTIR_copyOfObject(void* ptr);
+
+// create empty-copy in memory
+
+//extern "C"
+//void* cSTIR_copyOfObject(void* ptr)
+//{
+//	try {
+//		CAST_PTR(anObjectHandle, ptr_obj, ptr);
+//		return (void*)ptr_obj->copy();
+//	}
+//	CATCH
+//}
+//
+//extern "C"
+//void cSTIR_deleteObject(void* ptr)
+//{
+//	if (!ptr)
+//		return;
+//	CAST_PTR(anObjectHandle, ptr_obj, ptr);
+//	delete ptr_obj;
+//}
+
+//filename = path + "Utahscat600k_ca_seg4.hs";
+//boost::shared_ptr<ProjData> sptr_t = ProjData::read_from_file(filename);
+//Succeeded sppm =
+//	sptr_ppm->set_up(sptr_t->get_proj_data_info_sptr(), sptr_image);
+//boost::shared_ptr<ProjData> sptr_fd(
+//	new ProjDataInMemory(sptr_t->get_exam_info_sptr(),
+//	sptr_t->get_proj_data_info_sptr()));
+//sptr_ppm->get_forward_projector_sptr()->forward_project
+//	(*sptr_fd, *sptr_image);
+
+//size_t size = sptr_background_->size_all();
+//size_t foreground_size = sptr_fd->size_all();
+//if (size != foreground_size) {
+//	std::cout << "wrong background term size " << size
+//		<< ", must be " << foreground_size << ", skipping\n";
+//	return sptr_fd;
+//}
+//std::cout << "adding background term...\n";
+//double* fdata = new double[size];
+//double* bdata = new double[size];
+//sptr_fd->copy_to(fdata);
+//sptr_background_->copy_to(bdata);
+//add_(size, fdata, bdata);
+//sptr_fd->fill_from(fdata);
+//delete[] fdata;
+//delete[] bdata;
+
+//#define CAST_PTR(T, X, Y) T* X = (T*)Y
+//#define NEW_SPTR(Base, X, Object) \
+//	boost::shared_ptr< Base >* X = new boost::shared_ptr< Base >(new Object)
+//#define CATCH \
+//	catch (LocalisedException& se) {\
+//		ExecutionStatus status(se);\
+//		DataHandle* handle = new DataHandle;\
+//		handle->set(0, &status);\
+//		return (void*)handle;\
+//	}\
+//	catch (...) {\
+//		ExecutionStatus status("unhandled exception", __FILE__, __LINE__);\
+//		DataHandle* handle = new DataHandle;\
+//		handle->set(0, &status);\
+//		return (void*)handle;\
+//	}\
+
+//((ProjectorPairUsingMatrix*)sptr_ppm_.get())->
+//	set_proj_matrix_sptr(sptr_matrix);
+
+//boost::shared_ptr<ProjectorByBinPair> sptr_ppm_;
+
+//PETAcquisitionModel(
+
+//boost::shared_ptr<ProjectorByBinPair> sptr_projectors,
+
+//sptr_projectors_ = sptr_projectors;
+
+//void set_multiplicative_term(boost::shared_ptr<ProjData> sptr)
+//{
+//	sptr_mult_ = sptr;
+//}
+
+//boost::shared_ptr<ProjData> sptr_mult_;
+
+//sptr_ppm_->set_proj_matrix_sptr(sptr_matrix);
+
+//void set_up(
+//	boost::shared_ptr<ProjData> sptr_acq,
+//	boost::shared_ptr<Image> sptr_image)
+//{
+//	PETAcquisitionModel::set_up(sptr_ppm_, sptr_acq, sptr_image);
+//}
+
+//return sptr_ppm_->get_proj_matrix_sptr();
+
+//boost::shared_ptr<ProjectorByBinPair> projectors_sptr()
+//{
+//	return sptr_ppm_;
+//}
+
+//sptr_ppm_.reset(new ProjectorPairUsingMatrix);
+//set_projectors(sptr_ppm_);
+
+//boost::shared_ptr<ProjectorPairUsingMatrix> sptr_ppm_;
+
+size_t segments, sinos, views, tangs;
+segments = sptr_acq->get_num_segments();
+sinos = sptr_acq->get_num_sinograms();
+views = sptr_acq->get_num_views();
+tangs = sptr_acq->get_num_tangential_poss();
+std::cout << "segments: " << segments << '\n';
+std::cout << "sinograms: " << sinos << '\n';
+std::cout << "views: " << views << '\n';
+std::cout << "tangential positions: " << tangs << '\n';
+Coordinate3D<int> min_indices;
+Coordinate3D<int> max_indices;
+sptr_image->get_regular_range(min_indices, max_indices);
+for (int i = 0; i < 3; i++)
+	std::cout << max_indices[i + 1] - min_indices[i + 1] + 1 << '\n';
+
+std::cout << "ok\n";
+int dim[3];
+cSTIR_getAcquisitionsDimensions(ptr_dt, (size_t)&dim[0]);
+std::cout << dim[0] << ' ' << dim[1] << ' ' << dim[2] << '\n';
+
+//std::cout << "ok\n";
+
+//sptrImage3DF sptr_im = objectSptrFromHandle<Image3DF>(hi);
+
+//*ptr_sptr = sptr_am->forward(*sptr_im, datafile);
+
+//sptrAcqMod3DF sptr_am = objectSptrFromHandle<AcqMod3DF>(ha);
+
+//Succeeded s = sptr_am->set_up(sptr_dt, sptr_im);
+
+//sptrAcqMod3DF sptr_am = objectSptrFromHandle<AcqMod3DF>(ha);
+
+//*ptr_sptr = sptr_am->forward(im, datafile);
+
+//sptrAcqMod3DF sptr_am = objectSptrFromHandle<AcqMod3DF>(ha);
+//sptrProjData sptr_ad = objectSptrFromHandle<ProjData>(hd);
+//sptrImage3DF* ptr_sptr = new sptrImage3DF(sptr_am->backward(*sptr_ad));
+
+//ProjDataInMemory adc(ad.get_exam_info_sptr(), ad.get_proj_data_info_sptr());
+//adc.fill(ad);
+
+//double* data_a = new double[size_a];
+//double* data_b = new double[size_b];
+
+//void add_(size_t n, double* u, double* v)
+
+//void* cSTIR_acquisitionModelSetup
+//	(void* ptr_am, const char* templ, void* ptr_im);
+//void* cSTIR_acquisitionModelForward
+//	(void* ptr_am, const char* datafile, void* ptr_dt, void* ptr_im);
+//void* cSTIR_acquisitionModelBackward
+//	(void* ptr_am, void* ptr_ad, void* ptr_im);
+
+//extern "C"
+//void* cSTIR_acquisitionModelSetup(void* ptr_am, const char* templ, void* ptr_im)
+//{
+//	try {
+//		sptrProjData* ptr_sptr =
+//			new sptrProjData(ProjData::read_from_file(templ));
+//		sptrProjData& sptr_t = *ptr_sptr;
+//		CAST_PTR(DataHandle, ha, ptr_am);
+//		CAST_PTR(DataHandle, hi, ptr_im);
+//		sptrProjPair& sptr_am = objectSptrFromHandle<ProjectorByBinPair>(ha);
+//		sptrImage3DF& sptr_im = objectSptrFromHandle<Image3DF>(hi);
+//		Succeeded s =
+//			sptr_am->set_up(sptr_t->get_proj_data_info_sptr(), sptr_im);
+//		DataHandle* handle = new DataHandle;
+//		if (s != Succeeded::yes) {
+//			ExecutionStatus status("cSTIR_acquisitionModelSetup failed",
+//				__FILE__, __LINE__);
+//			handle->set(0, &status);
+//		}
+//		else
+//			handle->set((void*)ptr_sptr);
+//		return (void*)handle;
+//	}
+//	CATCH
+//}
+//
+//extern "C"
+//void* cSTIR_acquisitionModelForward
+//(void* ptr_am, const char* datafile, void* ptr_dt, void* ptr_im)
+//{
+//	try {
+//		CAST_PTR(DataHandle, ha, ptr_am);
+//		CAST_PTR(DataHandle, ht, ptr_dt);
+//		CAST_PTR(DataHandle, hi, ptr_im);
+//		sptrProjPair& sptr_am = objectSptrFromHandle<ProjectorByBinPair>(ha);
+//		sptrProjData& sptr_dt = objectSptrFromHandle<ProjData>(ht);
+//		sptrImage3DF& sptr_im = objectSptrFromHandle<Image3DF>(hi);
+//		DataHandle* handle = new DataHandle;
+//		if (strlen(datafile) < 1) {
+//			NEW_SPTR(ProjData, ptr_sptr,
+//				ProjDataInMemory(sptr_dt->get_exam_info_sptr(),
+//				sptr_dt->get_proj_data_info_sptr()));
+//			sptrProjData& sptr_t = *ptr_sptr;
+//			sptr_am->get_forward_projector_sptr()->forward_project
+//				(*sptr_t, *sptr_im);
+//			handle->set((void*)ptr_sptr);
+//		}
+//		else {
+//			NEW_SPTR(ProjData, ptr_sptr,
+//				ProjDataInterfile(sptr_dt->get_exam_info_sptr(),
+//				sptr_dt->get_proj_data_info_sptr(), datafile));
+//			sptrProjData& sptr_t = *ptr_sptr;
+//			sptr_am->get_forward_projector_sptr()->forward_project
+//				(*sptr_t, *sptr_im);
+//			handle->set((void*)ptr_sptr);
+//		}
+//		return (void*)handle;
+//	}
+//	CATCH
+//}
+//
+//extern "C"
+//void* cSTIR_acquisitionModelBackward(void* ptr_am, void* ptr_ad, void* ptr_im)
+//{
+//	try {
+//		CAST_PTR(DataHandle, ha, ptr_am);
+//		CAST_PTR(DataHandle, hd, ptr_ad);
+//		CAST_PTR(DataHandle, hi, ptr_im);
+//		sptrProjPair& sptr_am = objectSptrFromHandle<ProjectorByBinPair>(ha);
+//		sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>(hd);
+//		Image3DF& image = objectFromHandle<Image3DF>(hi);
+//		sptrImage3DF* ptr_sptr = new sptrImage3DF(image.clone());
+//		sptrImage3DF& sptr_im = *ptr_sptr;
+//		sptr_im->fill(0.0F);
+//		sptr_am->get_back_projector_sptr()->back_project(*sptr_im, *sptr_ad);
+//		return newObjectHandle(ptr_sptr);
+//	}
+//	CATCH
+//}
+
+//inline bool xSTIR_setupPrior(void* ptr)
+//{
+//	CAST_PTR(boost::shared_ptr< GeneralisedPrior<Image3DF> >, sptr_obj, ptr);
+//	CAST_PTR(xSTIR_GeneralisedPrior3DF, obj, sptr_obj->get());
+//	bool status = obj->post_process();
+//	return status;
+//}
+//
+//inline bool xSTIR_setupObjectiveFunction(void* ptr)
+//{
+//	CAST_PTR(boost::shared_ptr< GeneralisedObjectiveFunction<Image3DF> >,
+//		sptr_obj, ptr);
+//	CAST_PTR(xSTIR_GeneralisedObjectiveFunction3DF, obj, sptr_obj->get());
+//	bool status = obj->post_process();
+//	return status;
+//}
+
+//inline Succeeded xSTIR_setupReconstruction(void* ptr, sptrImage3DF const& image)
+//{
+//	CAST_PTR(boost::shared_ptr<xSTIR_IterativeReconstruction3DF>, sptr, ptr);
+//	xSTIR_IterativeReconstruction3DF* recon = sptr->get();
+//	// not needed - default is non-zero string ("1") anyway
+//	//recon->set_initial_estimate_file("dummy.hv");
+//	Succeeded s = Succeeded::no;
+//	if (recon->post_process())
+//		return s;
+//	s = recon->setup(image);
+//	recon->subiteration() = recon->get_start_subiteration_num();
+//	return s;
+//}
+//
+//inline void xSTIR_updateReconstruction(void* ptr, Image3DF& image) 
+//{
+//	CAST_PTR(boost::shared_ptr<xSTIR_IterativeReconstruction3DF>, sptr, ptr);
+//	xSTIR_IterativeReconstruction3DF* recon = sptr->get();
+//	recon->update(image);
+//}
+
+//inline int& xSTIR_subiteration(void* ptr) 
+//{
+//	CAST_PTR(xSTIR_IterativeReconstruction3DF, recon, ptr);
+//	return recon->subiteration();
+//}
+//
+//inline void xSTIR_set_initial_estimate_file(void* ptr, const char* filename) 
+//{
+//	CAST_PTR(xSTIR_IterativeReconstruction3DF, recon, ptr);
+//	recon->set_initial_estimate_file(filename);
+//}
+
+//			< ObjectiveFunction3DF, PoissonLogLhLinModMeanProjData3DF >();
+
+//CAST_PTR(DataHandle, ho, ptr_obj);
+
+//status = xSTIR_setupObjectiveFunction(ho->data());
+
+//CAST_PTR(DataHandle, hp, ptr_p);
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//CAST_PTR(DataHandle, ha, ptr_am);
+//CAST_PTR(DataHandle, ht, ptr_dt);
+//CAST_PTR(DataHandle, hi, ptr_im);
+
+//CAST_PTR(DataHandle, ha, ptr_am);
+//CAST_PTR(DataHandle, hi, ptr_im);
+
+//CAST_PTR(DataHandle, ha, ptr_am);
+//CAST_PTR(DataHandle, hd, ptr_ad);
+
+//sptrProjData& sptr_t =
+//	objectSptrFromHandle<ProjData>((DataHandle*)ptr_t);
+
+//sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>((DataHandle*)ptr_acq);
+
+//sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>((DataHandle*)ptr_acq);
+
+//sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>((DataHandle*)ptr_acq);
+
+//sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>((DataHandle*)ptr_acq);
+
+//sptrProjData& sptr_from = objectSptrFromHandle<ProjData>((DataHandle*)ptr_from);
+
+//sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>((DataHandle*)ptr_acq);
+
+//CAST_PTR(DataHandle, hr, ptr_r);
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//Succeeded s = xSTIR_setupReconstruction(hr->data(), sptr_image);
+
+//CAST_PTR(DataHandle, hr, ptr_r);
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//CAST_PTR(DataHandle, hr, ptr_r);
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//xSTIR_updateReconstruction(hr->data(), image);
+
+//CAST_PTR(DataHandle, hf, ptr_f);
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//CAST_PTR(DataHandle, hf, ptr_f);
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//CAST_PTR(DataHandle, hv, ptr_v);
+
+//CAST_PTR(DataHandle, hi, ptr_i);
+
+//sptrProjData& sptr_ad = objectSptrFromHandle<ProjData>((DataHandle*)ptr_ad);
+
+//CAST_PTR(DataHandle, hi, ptr_i);
+//CAST_PTR(DataHandle, hv, ptr_v);
+//CAST_PTR(DataHandle, hs, ptr_s);
+
+//Image3DF* ptr_image = objectPtrFromHandle<Image3DF>((DataHandle*)ptr_i);
+
+//Image3DF* ptr_image = objectPtrFromHandle<Image3DF>((DataHandle*)ptr_im);
+
+//Image3DF* ptr_image = objectPtrFromHandle<Image3DF>((DataHandle*)ptr_im);
+
+//Image3DF* ptr_image = objectPtrFromHandle<Image3DF>((DataHandle*)ptr_im);
+
+//CAST_PTR(DataHandle, first_h, first);
+//CAST_PTR(DataHandle, second_h, second);
+
+//PoissonLogLhLinModMeanProjData3DF& obj_fun = objectFromHandle
+//	< ObjectiveFunction3DF, PoissonLogLhLinModMeanProjData3DF >(hp);
+
+//{	
+//AcqMod3DF& am = objectFromHandle<AcqMod3DF>(hv);
+//obj_fun.set_projector_pair_sptr(am.projectors_sptr());
+//if (am.additive_term_sptr().get())
+//	obj_fun.set_additive_proj_data_sptr(am.additive_term_sptr());
+//if (am.normalisation_sptr().get())
+//	obj_fun.set_normalisation_sptr(am.normalisation_sptr());
+//}
+
+//xSTIR_set_initial_estimate_file(&recon, charDataFromHandle(hv));
+
+//xSTIR_subiteration(&recon) = value;
+
+//return intDataHandle(xSTIR_subiteration(&recon));
+
+//void* cSTIR_addShape(void* ptr_i, void* ptr_v, void* ptr_s, float v);
+
+//Voxels3DF& voxels = objectFromHandle<Voxels3DF>(ptr_v);
+
+// On Linux, Matlab cannot stand this
+//#include "iutilities.h"
+//#include "cstir.h"
+//#include "stir_p.h"
+// and cannot find charDataFromHandle
+char* _charDataFromHandle(const DataHandle* ptr_h)
+{
+	void* ptr_d = ptr_h->data();
+	if (!ptr_d)
+		return 0;
+	else
+		return (char*)ptr_d;
+}
+
+//#define CATCH \
+//	catch (LocalisedException& se) {\
+//		ExecutionStatus status(se);\
+//		DataHandle* handle = new DataHandle;\
+//		handle->set(0, &status);\
+//		return (void*)handle;\
+//		}\
+//	catch (...) {\
+//		ExecutionStatus status("unhandled exception", __FILE__, __LINE__);\
+//		DataHandle* handle = new DataHandle;\
+//		handle->set(0, &status);\
+//		return (void*)handle;\
+//		}\
+
+#include "../../iUtilities/iutilities.h"
+
+%include "../../iUtilities/iutilities.h"

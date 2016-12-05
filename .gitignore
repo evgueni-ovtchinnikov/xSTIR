@@ -235,6 +235,7 @@ $RECYCLE.BIN/
 *.o
 *.a
 *.dll
+*.so
 *.ahv
 *.hv
 *.v
@@ -243,6 +244,7 @@ $RECYCLE.BIN/
 *.pyd
 *.pyc
 *.mexw64
+*.mexa64
 *.mat
 *.am
 *.thresholded
@@ -252,7 +254,5 @@ pSTIR/pystir_wrap.cxx
 pSTIR/_pystir.pyd
 pSTIR/__pycache__/pystir.cpython-34.pyc
 pSTIR/__pycache__/stir.cpython-34.pyc
-examples/stir_demo1*.txt
-examples/stir_demo2*.txt
-examples/stir_demo3*.txt
-examples/stir_demo4*.txt
+examples/*.txt
+testing_lab/*.txt

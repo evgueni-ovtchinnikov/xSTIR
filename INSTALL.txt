@@ -64,6 +64,19 @@ STIR_BUILD    Path to src folder in STIR build folder
 STIR_INCLUDE  Path to STIR include folder
 
 
+Build CCPPETMR C++-to-C interface utilities library
+------------------------_--------------------------
+
+-Clone iUtilities from GitHub CCPPETMR and follow the instructions in INSTALL.txt.
+
+-Add two user variables to Windows environment variables:
+
+Variable name      Variable value
+
+IUTILITIES         Path to the folder where iUtilities was cloned
+IUTILITIES_LIBRARY <iUtilities folder>/x64/Release/iUtilities.lib
+
+
 Build C interface to STIR:
 --------------------------
 
@@ -75,7 +88,7 @@ Build C interface to STIR:
 
 -Click on BUILD and select "build Solution"
 
--Add user variable CSTIR containing the path to cSTIR folder to Windows environment
+-Add user variable CSTIR_SRC containing the path to cSTIR folder to Windows environment
  variables
 
 
@@ -89,7 +102,7 @@ Build Python interface to STIR:
 -Click on BUILD and select "build Solution"
 
 
-Build MAtlab interface to STIR:
+Build Matlab interface to STIR:
 -------------------------------
 
 -Run mex_stir.m
@@ -104,11 +117,15 @@ Cygwin/Linux installation steps (Python interface only)
 
 -Clone STIR from GitHub CCPPETMR, cd to STIR folder and run cmake (remove -fPIC flags on cygwin):
 
-   cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_INSTALL_PREFIX=<where STIR libraries re to be built> ./
+   mkdir build
+   cd build
+   cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_C_FLAGS=-fPIC -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_INSTALL_PREFIX=<where STIR libraries are to be built> ../
 
 -Run make to build STIR.
 
 -Run make install to install STIR libraries.
+
+-Clone iUtilities from GitHub CCPPETMR and follow the instructions in INSTALL.txt.
 
 -Clone xSTIR from GitHub CCPPETMR.
 
@@ -121,5 +138,8 @@ export PYTHON=<Python version e.g. python2.7>
 export PYINCLUDE=<Path to Python include folder, e.g. /usr/include/python2.7>
 export PYLIBPATH=<Path to Python libraries, e.g. /usr/lib/python2.7/config-x86_64-linux-gnu>
 
--Go to pSTIR sub-folder and run make.
+Create folder <work_dir>/build/xSTIR.
+
+-run make.
+
 
